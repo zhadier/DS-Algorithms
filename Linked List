@@ -1,0 +1,132 @@
+// Start with your code from last challenge.
+class Node {
+    constructor(value, next_node = null) {
+        this.value = value;
+        this.next_node = next_node;
+    }
+}
+
+class LinkedList {
+    // setup head, tail and size
+    constructor() {
+    this.head = null;
+    this.tail = null;
+    this.size = 0;
+    }
+
+    add(number) {
+        // your code here
+        //Create a new node to add
+        let node = new Node();
+        // Increase the total size of the linkedlist
+        this.size++;
+        // Assign the value to be given to the node
+        node.value = number;
+        // Check if linked list is empty and assign new node as head if so
+        if (this.head == null) {
+            this.head = node;
+        }
+        //Otherwise traverse through the linked list till you reach the end node
+        else {
+            var currentNode = this.head;
+            while (currentNode.next_node != null) {
+                currentNode = currentNode.next_node;
+            }
+            //Assign new node as next of previous last node
+            currentNode.next_node = node;
+            //Make the new node the tail
+            this.tail = node;
+        }
+    }
+
+    get(index) {
+        //If the index is an invalid input, return null
+        if (index > (this.size - 1) && index < 0) {
+            return null;
+        }
+        //Otherwise traverse through the loop till you get to the required index
+        else {
+            let currentNode = this.head;
+            let count = 0;
+            while (count != index) {
+                currentNode = currentNode.next_node;
+                count++;
+            }
+            //Return the value of the required index
+            return currentNode.value;
+        }
+    }
+
+    addAt(index, item) {
+        //If the index is an invalid input, return null  
+        if (index > (this.size) && index < 0) {
+            return null;
+        } else {
+            //Create a new node to add
+            let node = new Node();
+            // Assign the value to be given to the node
+            node.value = item;
+            this.size++;
+            //If node to be added at head, just assign the new node's next node as head, and then make head point to the new node.
+            if (index == 0) {
+                node.next_node = this.head;
+                this.head = node;
+            }
+            //Otherwise traverse through the loop till you get to the index before the one you need to add at
+            else {
+                let currentNode = this.head;
+                let count = 0;
+                while (count != index - 1) {
+                    currentNode = currentNode.next_node;
+                    count++;
+                }
+                // Assign the next of the new node as the previous node at that index
+                node.next_node = currentNode.next_node;
+                // Assign the Index-1 node's next as the new node
+                currentNode.next_node = node;
+                if (this.tail === currentNode) {
+                    this.tail = node;
+                }
+            }
+        }
+
+    }
+
+    remove(index) {
+        //If the index is an invalid input, return null  
+        if (index > (this.size - 1) && index < 0) {
+            return null;
+        } else {
+            this.size--;
+            if (index == 0) {
+                this.head = this.head.next_node;
+            }
+            //Otherwise traverse through the loop till you get to the index before the one you need to add at
+            else {
+                let currentNode = this.head;
+                let count = 0;
+                while (count != index - 1) {
+                    currentNode = currentNode.next_node;
+                    count++;
+                }
+                if (currentNode.next_node === this.tail) {
+                    this.tail = currentNode;
+                }
+                currentNode.next_node = currentNode.next_node.next_node;
+            }
+        }
+    }
+}
+
+const list = new LinkedList()
+
+list.add(3)
+list.add(5)
+list.addAt(1, 11)
+list.addAt(0, 13)
+
+console.log(list.get(2))
+// => 11
+
+console.log(list.get(3))
+// => 5
